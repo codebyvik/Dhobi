@@ -1,11 +1,11 @@
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { OrderContainer } from "./order.style";
 import { Pagination } from "antd";
 
 const CustomerOrderPage = () => {
   return (
-    <div className="px-2 py-1">
+    <Container className="px-2 py-1">
       <h3>Orders</h3>
       <OrderContainer>
         <section key={1} className="order-card">
@@ -45,8 +45,7 @@ const CustomerOrderPage = () => {
           </section>
           <Link
             to={{
-              pathname: `/admin/dashboard/orders/123`,
-              state: { from: "dashboard" },
+              pathname: `/orders/123`,
             }}
             className="more-link"
           >
@@ -57,7 +56,7 @@ const CustomerOrderPage = () => {
       <section className="pagination">
         <Pagination size="small" total={10} current={1} pageSize={4} hideOnSinglePage />
       </section>
-    </div>
+    </Container>
   );
 };
 

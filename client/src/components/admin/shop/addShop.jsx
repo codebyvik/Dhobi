@@ -16,7 +16,31 @@ const AddShop = () => {
     pincode: "",
     desc: "",
     image: "",
+    services: [
+      {
+        service_name: "Iron",
+        price: "",
+      },
+      {
+        service_name: "Stain Removal",
+        price: "",
+      },
+      {
+        service_name: "Regular Wash",
+        price: "",
+      },
+      {
+        service_name: "HandWash",
+        price: "",
+      },
+      {
+        service_name: "Advanced Machine Wash",
+        price: "",
+      },
+    ],
   });
+
+  console.log(shopDetails);
 
   const handleFileChange = (e) => {
     if (e.target.files[0]) {
@@ -32,7 +56,7 @@ const AddShop = () => {
 
   const { user, loading } = useSelector((state) => state.auth);
 
-  const { name, area, city, pincode, desc } = shopDetails;
+  const { name, area, city, pincode, desc, services } = shopDetails;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -107,6 +131,27 @@ const AddShop = () => {
             required
           />
         </Form.Group>
+
+        {services.map((service, idx) => (
+          <Form.Group key={idx} className="mb-3" controlId="formBasicEmail">
+            <Form.Label>{service.service_name}</Form.Label>
+            <Form.Control
+              type="Number"
+              name={service.service_name}
+              value={service.price}
+              placeholder="Enter Price"
+              onChange={(e) => {
+                const { name, value } = e.target;
+
+                const newServices = services;
+                newServices[idx].price = value;
+
+                setShopDetails({ ...shopDetails, services: [...newServices] });
+              }}
+              required
+            />
+          </Form.Group>
+        ))}
 
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>Select Image</Form.Label>
