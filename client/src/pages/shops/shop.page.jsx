@@ -45,7 +45,7 @@ const ShopPage = () => {
             <div>
               <h3>{shop.name}</h3>
               <p>{(shop.location.area, shop.location.city, shop.location.pincode)}</p>
-              <Rate className="mb-3" disabled allowHalf defaultValue={3} /> <br />
+              <Rate className="mb-3" disabled allowHalf defaultValue={shop.ratings} /> <br />
               <Link to={`/shops/${shop._id}`}>
                 <Button variant="outline-primary" size="sm">
                   visit shop

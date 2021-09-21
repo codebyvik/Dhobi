@@ -8,7 +8,7 @@ exports.getAllAgents = async (req, res) => {
   const resPerPage = 4;
   const count = await Agent.countDocuments();
   const countAgentsInArea = await Agent.countDocuments({ "location.area": req.query.area });
-  const searchApi = await new SearchFeature(Agent.find(), req.query).searchShop().filterShop();
+  const searchApi = await new SearchFeature(Agent.find(), req.query).searchShop();
 
   searchApi.ShopPagination(resPerPage);
   const agents = await searchApi.query;

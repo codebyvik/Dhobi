@@ -1,69 +1,26 @@
-import AgentActionTypes from "./agent.action.types";
-// Get all Agents
-export const getAllAgentsAction = (keyword) => ({
-  type: AgentActionTypes.GET_ALL_AGENTS_START,
-  payload: keyword,
-});
-export const getAllAgentsSuccess = (data) => ({
-  type: AgentActionTypes.GET_ALL_AGENTS_SUCCESS,
-  payload: data,
-});
-export const getAllAgentsFail = (error) => ({
-  type: AgentActionTypes.GET_ALL_AGENTS_FAIL,
-  payload: error,
-});
+import UserActionTypes from "./customer.action.types";
 
-// Get Single Agent
-export const getSingleAgentAction = (id) => ({
-  type: AgentActionTypes.GET_SINGLE_AGENT_START,
-  payload: id,
-});
-export const getSingleAgentSuccess = (mall) => ({
-  type: AgentActionTypes.GET_SINGLE_AGENT_SUCCESS,
-  payload: mall,
-});
-export const getSingleAgentFail = (error) => ({
-  type: AgentActionTypes.GET_SINGLE_AGENT_FAIL,
-  payload: error,
-});
-
-// Update Agent
-export const updateAgentAction = (newData) => ({
-  type: AgentActionTypes.UPDATE_AGENT_START,
+export const updateUserAction = (newData) => ({
+  type: UserActionTypes.UPDATE_USER_START,
   payload: newData,
 });
-export const updateAgentSuccess = (mall) => ({
-  type: AgentActionTypes.UPDATE_AGENT_SUCCESS,
-  payload: mall,
+export const updateUserSuccess = () => ({
+  type: UserActionTypes.UPDATE_USER_SUCCESS,
 });
-export const updateAgentFail = (error) => ({
-  type: AgentActionTypes.UPDATE_AGENT_FAIL,
+export const updateUserFail = (error) => ({
+  type: UserActionTypes.UPDATE_USER_FAIL,
   payload: error,
 });
 
-// Add Agent
-export const addAgentAction = (data) => ({
-  type: AgentActionTypes.ADD_AGENT_START,
-  payload: data,
+// update password
+export const updatePasswordAction = (password) => ({
+  type: UserActionTypes.UPDATE_PASSWORD_START,
+  payload: password,
 });
-export const addAgentSuccess = (mall) => ({
-  type: AgentActionTypes.ADD_AGENT_SUCCESS,
-  payload: mall,
+export const updatePasswordSuccess = () => ({
+  type: UserActionTypes.UPDATE_PASSWORD_SUCCESS,
 });
-export const addAgentFail = (error) => ({
-  type: AgentActionTypes.ADD_AGENT_FAIL,
-  payload: error,
-});
-
-// delete mall
-export const deleteAgentAction = (id) => ({
-  type: AgentActionTypes.DELETE_AGENT_START,
-  payload: id,
-});
-export const deleteAgentSuccess = () => ({
-  type: AgentActionTypes.DELETE_AGENT_SUCCESS,
-});
-export const deleteAgentFail = (error) => ({
-  type: AgentActionTypes.DELETE_AGENT_FAIL,
+export const updatePasswordFail = (error) => ({
+  type: UserActionTypes.UPDATE_PASSWORD_FAIL,
   payload: error,
 });

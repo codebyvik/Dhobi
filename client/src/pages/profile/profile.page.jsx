@@ -6,6 +6,7 @@ import Loader from "../../utils/Loader";
 import { StyledForm } from "../auth/auth.style";
 
 import { Select } from "antd";
+import { updateUserAction } from "../../redux/customer/customer.action";
 
 const { Option } = Select;
 
@@ -70,6 +71,7 @@ const ProfilePage = () => {
       email,
       phoneNo,
       password,
+      id: user._id,
       location: {
         area,
         city,
@@ -77,8 +79,8 @@ const ProfilePage = () => {
         country,
       },
     };
-    console.log(CustomerCredentials);
-    // dispatch(adminSignInAction(credentials));
+
+    dispatch(updateUserAction(CustomerData));
   };
 
   return (

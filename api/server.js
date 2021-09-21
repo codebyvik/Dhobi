@@ -15,6 +15,7 @@ const agent = require("./routes/agent.route");
 const customer = require("./routes/customer.route");
 const order = require("./routes/order.route");
 const payment = require("./routes/payment.route");
+const dashboard = require("./routes/dashboard.route");
 
 // handle Uncaught exception
 process.on("uncaughtException", (err) => {
@@ -45,6 +46,7 @@ app.use("/api/v1/agent", agent);
 app.use("/api/v1/customer", customer);
 app.use("/api/v1/order", order);
 app.use("/api/v1/payment", payment);
+app.use("/api/v1/dashboard", dashboard);
 
 // listen to port
 const PORT = process.env.PORT || 5000;

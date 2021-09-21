@@ -41,16 +41,16 @@ class SearchFeature {
   }
 
   // Filter Shop
-  filterShop() {
-    const queryCopy = { ...this.queryStr };
+  // filterShop() {
+  //   const queryCopy = { ...this.queryStr };
 
-    // Removing fields from the query
-    const removeFields = ["keyword", "limit", "page"];
-    removeFields.forEach((el) => delete queryCopy[el]);
+  //   // Removing fields from the query
+  //   const removeFields = ["keyword", "limit", "page"];
+  //   removeFields.forEach((el) => delete queryCopy[el]);
 
-    this.query = this.query.find(area);
-    return this;
-  }
+  //   this.query = this.query.find(area);
+  //   return this;
+  // }
 
   ShopPagination(resPerPage) {
     const currentPage = Number(this.queryStr.page) || 1;
