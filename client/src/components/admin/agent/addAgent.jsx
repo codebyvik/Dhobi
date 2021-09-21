@@ -1,48 +1,48 @@
 import { StyledAddAgentForm } from "./agent.component.style";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../utils/Loader";
+import { addAgentAction } from "../../../redux/agents/agent.action";
 
 const AddAgent = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const [shopDetails, setShopDetails] = useState({
+
+  const [agentDetails, setAgentDetails] = useState({
     name: "",
     area: "",
     city: "",
     country: "India",
     pincode: "",
-    image: "",
     email: "",
     phoneNo: "",
+    password: "",
   });
 
-  const handleFileChange = (e) => {
-    if (e.target.files[0]) {
-      const reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
+  const { loading } = useSelector((state) => state.agents);
 
-      reader.onloadend = () => {
-        setShopDetails({ ...shopDetails, image: reader.result });
-      };
-    }
-    return;
-  };
-
-  const { user, loading } = useSelector((state) => state.auth);
-
-  const { name, area, city, pincode, email, phoneNo } = shopDetails;
+  const { name, area, city, pincode, email, phoneNo, country, password } = agentDetails;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setShopDetails({ ...shopDetails, [name]: value });
+    setAgentDetails({ ...agentDetails, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // dispatch(adminSignInAction(credentials));
+    const AgentData = {
+      name,
+      phoneNo,
+      email,
+      location: {
+        area,
+        city,
+        pincode,
+        country,
+      },
+      password,
+    };
+    dispatch(addAgentAction(AgentData));
   };
 
   return (
@@ -56,7 +56,7 @@ const AddAgent = () => {
             name="name"
             type="text"
             value={name}
-            placeholder="Enter Shop Name"
+            placeholder="Enter Agent Name"
             required
           />
         </Form.Group>
@@ -118,14 +118,21 @@ const AddAgent = () => {
           />
         </Form.Group>
 
-        <Form.Group controlId="formFile" className="mb-3">
-          <Form.Label>Select Image</Form.Label>
-          <Form.Control onChange={handleFileChange} type="file" required />
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            onChange={handleInputChange}
+            name="password"
+            type="password"
+            value={password}
+            placeholder="Enter Password"
+            required
+          />
         </Form.Group>
 
         <div className="d-flex justify-content-center">
           <Button className="d-flex  align-items-center" variant="primary " type="submit">
-            <span className="me-2"> Add Shop </span>
+            <span className="me-2"> Add Agent </span>
             {loading && <Loader size={16} type="small" />}
           </Button>
         </div>

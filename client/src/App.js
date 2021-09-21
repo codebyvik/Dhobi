@@ -11,12 +11,16 @@ import ShopDetails from "./pages/shopDetails/shopDetails.page";
 import ShopPage from "./pages/shops/shop.page";
 import { useDispatch } from "react-redux";
 import { getLoggedInUserAction } from "./redux/auth/auth.action";
-// import { AdminRoute } from "./utils/ProtectedRoutes";
+import { AdminRoute, AgentRoute, ProtectedRoute } from "./utils/ProtectedRoutes";
 import AdminDashboard from "./pages/admin/dashboard/admin.dashboard";
 import ProfilePage from "./pages/profile/profile.page";
 import CustomerRegister from "./pages/auth/customerRegister.page";
 import CustomerOrderPage from "./pages/order/customerOrder.page";
 import OrderDetails from "./pages/orderDetails/orderDetails";
+import Checkout from "./pages/checkout/checkout.page";
+import StripeContainer from "./pages/checkout/stripeContainer";
+import Success from "./pages/checkout/success";
+import OrderPage from "./pages/order/order.page";
 
 message.config({ duration: 1, top: 60 });
 
@@ -33,17 +37,23 @@ function App() {
       <Switch>
         <Route path="/" component={HomePage} exact />
         <Route path="/shops" component={ShopPage} exact />
-        <Route path="/shopDetails" component={ShopDetails} exact />
-        <Route path="/shopDetails/add-items" component={AddItems} exact />
+        <Route path="/shops/:shopId" component={ShopDetails} exact />
+
         <Route path="/signin" component={CustomerSignin} exact />
         <Route path="/register" component={CustomerRegister} exact />
         <Route path="/agent/signin" component={AgentSignIn} exact />
         <Route path="/admin/signin" component={AdminSignin} exact />
-        <Route path="/admin/dashboard" component={AdminDashboard} />
-        <Route path="/profile" component={ProfilePage} exact />
-        <Route path="/orders" component={CustomerOrderPage} exact />
-        <Route path="/orders/:id" component={OrderDetails} exact />
-        {/* <AdminRoute path="/admin/dashboard" component={AdminDashboard} /> */}
+
+        <ProtectedRoute path="/shops/:shopId/addItems" component={AddItems} exact />
+
+        <ProtectedRoute path="/profile" component={ProfilePage} exact />
+        <ProtectedRoute path="/orders" component={CustomerOrderPage} exact />
+        <ProtectedRoute path="/orders/:id" component={OrderDetails} exact />
+        <ProtectedRoute path="/checkout" component={Checkout} exact />
+        <ProtectedRoute path="/payment" component={StripeContainer} exact />
+        <ProtectedRoute path="/order/success" component={Success} exact />
+        <AdminRoute path="/admin/dashboard" component={AdminDashboard} />
+        <AgentRoute path="/agent/orders" component={OrderPage} />
       </Switch>
     </>
   );

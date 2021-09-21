@@ -1,90 +1,101 @@
 import { OrdersWrapper } from "./ordersPage.style";
+import { useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { fetchOrderDetailsAction, updateOrderAction } from "../../redux/order/order.action";
 
-// import {  Select } from "antd";
-// import { useParams } from "react-router-dom";
+import { Select } from "antd";
 
-// const { Option } = Select;
+const { Option } = Select;
 
 const OrderDetails = ({ customerOrder }) => {
-  // const param = useParams();
+  const param = useParams();
+
+  const dispatch = useDispatch();
+
+  const { order, loading } = useSelector((state) => state.order);
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(fetchOrderDetailsAction(param.id));
+  }, [dispatch, param.id]);
+
+  function handleChange(value) {
+    dispatch(updateOrderAction({ id: param.id, status: value }));
+  }
 
   return (
     <OrdersWrapper className="container">
       <h1>Order Details</h1>
+      {order && (
+        <>
+          <section className="order-details">
+            <div>
+              <b>Shipping Address</b>
+              <p>
+                {order.shippingInfo.address} {order.shippingInfo.area} {order.shippingInfo.city}
+                {order.shippingInfo.pincode}
+              </p>
+            </div>
+            <div>
+              <b>Payment Status</b>
+              <p>{order.paymentInfo.status}</p>
+            </div>
+            <div className="summary">
+              <b>Order Summary</b>
+              <p>order# {order._id}</p>
 
-      <>
-        <section className="order-details">
-          <div>
-            <b>Shipping Address</b>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae, culpa.</p>
-          </div>
-          <div>
-            <b>Payment Status</b>
-            <p>status</p>
-          </div>
-          <div className="summary">
-            <b>Order Summary</b>
-            <p>order# 123456789</p>
-
-            <span>
-              <p>Item(s) SubTotal :</p> &#8377;12045
-            </span>
-            <span>
-              <p>Shipping :</p> &#8377;1245
-            </span>
-            <span>
-              <p>Total :</p>&#8377;1234
-            </span>
-            <span>
-              <b>Grand Total :</b>&#8377;1234
-            </span>
-          </div>
-        </section>
-        <section className="orderDetails-product-card">
-          <section className="order-header">
-            <div className="order-name-status">
-              <h3>item name </h3>
+              <span>
+                <b>Grand Total :</b>&#8377;{order.totalPrice}
+              </span>
             </div>
           </section>
+          <section className="orderDetails-product-card">
+            <section className="order-header">
+              <div className="order-name-status">
+                <h3> {order.orderItems[0].cloth}</h3>
+              </div>
+            </section>
 
-          <section className="orderDetails-info">
-            <p>
-              <b>Order placed :</b> {new Date().toLocaleDateString()}
-            </p>
-            <p>
-              <b>Last Updated :</b> {new Date().toLocaleDateString()}
-              {new Date().toLocaleTimeString()}
-            </p>
-            <p>
-              <b>Order Status : </b>
-              status
-            </p>
+            <section className="orderDetails-info">
+              <p>
+                <b>Order placed :</b> {new Date(order.createdAt).toLocaleDateString()}
+              </p>
+              <p>
+                <b>Last Updated :</b> {new Date(order.updatedAt).toLocaleDateString()}
+                {new Date(order.updatedAt).toLocaleTimeString()}
+              </p>
+              <p>
+                <b>Order Status : </b>
+                {order.orderStatus === 0
+                  ? "Placed"
+                  : order.orderStatus === 1
+                  ? "In Process"
+                  : "Delivered"}
+              </p>
 
-            {/* {user && user.role === "seller" ? (
-                  <>
-                    <p>
-                      <b>Update Status :</b>
-                    </p>
-                    <Select
-                      defaultValue={order.orderStatus}
-                      style={{ width: 120 }}
-                      onChange={handleChange}
-                    >
-                      <Option value="Processing">Processing</Option>
-                      <Option value="Shipped">Shipped</Option>
-                      <Option value="Delivered">Delivered</Option>
-                    </Select>
-                  </>
-                ) : (
-                  ""
-                )} */}
-
-            <p>
-              <b>Update Status :</b>
-            </p>
+              {user && user.role === "agent" ? (
+                <>
+                  <p>
+                    <b>Update Status :</b>
+                  </p>
+                  <Select
+                    defaultValue={order.orderStatus}
+                    style={{ width: 120 }}
+                    onChange={handleChange}
+                  >
+                    <Option value="0">Processing</Option>
+                    <Option value="1">Cleaning</Option>
+                    <Option value="2">Delivered</Option>
+                  </Select>
+                </>
+              ) : (
+                ""
+              )}
+            </section>
           </section>
-        </section>
-      </>
+        </>
+      )}
     </OrdersWrapper>
   );
 };

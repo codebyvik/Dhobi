@@ -69,9 +69,6 @@ const AdminSignin = () => {
             <span className="me-2"> SignIn </span>
             {loading && <Loader size={16} type="small" />}
           </Button>
-          <Link to="/register">
-            <Button variant="outline-primary">Register</Button>
-          </Link>
         </div>
         <div className="d-flex flex-column justify-content-end align-items-end">
           <Link className="text-info mt-3" to="/signin">

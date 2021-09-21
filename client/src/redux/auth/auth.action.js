@@ -68,3 +68,17 @@ export const registerUserFail = (error) => ({
   type: AuthActionTypes.REGISTER_USER_FAIL,
   payload: error,
 });
+
+// Register User
+export const agentSignInAction = (UserData) => ({
+  type: AuthActionTypes.AGENT_SIGNIN_START,
+  payload: UserData,
+});
+export const agentSignInSuccess = (user) => ({
+  type: AuthActionTypes.AGENT_SIGNIN_SUCCESS,
+  payload: user,
+});
+export const agentSignInFail = (error) => ({
+  type: AuthActionTypes.AGENT_SIGNIN_FAIL,
+  payload: error,
+});

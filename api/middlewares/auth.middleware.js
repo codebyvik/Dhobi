@@ -1,5 +1,6 @@
 const Admin = require("../models/admin.model");
-// const User = require("../models/userSchema");
+const Customer = require("../models/customer.model");
+const Agent = require("../models/agent.model");
 
 const jwt = require("jsonwebtoken");
 const ErrorHandler = require("../utils/errorHandler");
@@ -14,15 +15,17 @@ exports.isAuthenticatedUser = async (req, res, next) => {
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
   const admin = await Admin.findById(decoded.id);
-  // const user = await User.findById(decoded.id);
+  const customer = await Customer.findById(decoded.id);
+  const agent = await Agent.findById(decoded.id);
 
-  // if (admin) {
-  //   req.user = admin;
-  // } else if (user) {
-  //   req.user = user;
-  // }
+  if (admin) {
+    req.user = admin;
+  } else if (agent) {
+    req.user = agent;
+  } else if (customer) {
+    req.user = customer;
+  }
 
-  req.user = admin;
   next();
 };
 

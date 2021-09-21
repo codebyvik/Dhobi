@@ -30,6 +30,35 @@ export const AdminRoute = ({ isAdmin, component: Component, ...rest }) => {
     </>
   );
 };
+export const AgentRoute = ({ isAgent, component: Component, ...rest }) => {
+  const { isAuthenticated, loading, user, gettingUser } = useSelector((state) => state.auth);
+  const loggedIn = localStorage.getItem("loggedIn");
+
+  return (
+    <>
+      {!loading && !gettingUser ? (
+        <Route
+          {...rest}
+          render={(props) => {
+            if (!loggedIn && !isAuthenticated) {
+              return <Redirect to="/agent/signin" />;
+            }
+
+            if (user) {
+              if (isAgent === true && user.role !== "agent") {
+                return <Redirect to="/" />;
+              }
+            }
+
+            return <Component {...props} />;
+          }}
+        />
+      ) : (
+        ""
+      )}
+    </>
+  );
+};
 
 export const ProtectedRoute = ({ seller, component: Component, ...rest }) => {
   const { isAuthenticated, loading, user, gettingUser } = useSelector((state) => state.auth);

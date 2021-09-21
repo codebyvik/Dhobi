@@ -1,13 +1,14 @@
 import { StyledAddShopForm } from "./shop.component.style";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../utils/Loader";
+import { addShopAction } from "../../../redux/shop/shop.action";
 
 const AddShop = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+
   const [shopDetails, setShopDetails] = useState({
     name: "",
     area: "",
@@ -15,7 +16,8 @@ const AddShop = () => {
     country: "India",
     pincode: "",
     desc: "",
-    image: "",
+    phoneNo: "",
+    image: null,
     services: [
       {
         service_name: "Iron",
@@ -40,8 +42,6 @@ const AddShop = () => {
     ],
   });
 
-  console.log(shopDetails);
-
   const handleFileChange = (e) => {
     if (e.target.files[0]) {
       const reader = new FileReader();
@@ -54,9 +54,9 @@ const AddShop = () => {
     return;
   };
 
-  const { user, loading } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.shop);
 
-  const { name, area, city, pincode, desc, services } = shopDetails;
+  const { name, phoneNo, area, city, pincode, country, desc, services, image } = shopDetails;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -65,7 +65,20 @@ const AddShop = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // dispatch(adminSignInAction(credentials));
+    const ShopData = {
+      name,
+      phoneNo,
+      desc,
+      location: {
+        area,
+        city,
+        pincode,
+        country,
+      },
+      services,
+      image,
+    };
+    dispatch(addShopAction(ShopData));
   };
 
   return (
@@ -80,6 +93,17 @@ const AddShop = () => {
             type="text"
             value={name}
             placeholder="Enter Shop Name"
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Phone no</Form.Label>
+          <Form.Control
+            onChange={handleInputChange}
+            name="phoneNo"
+            type="text"
+            value={phoneNo}
+            placeholder="Enter phone no"
             required
           />
         </Form.Group>

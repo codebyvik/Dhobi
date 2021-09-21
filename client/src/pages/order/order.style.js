@@ -4,4 +4,5 @@ export const OrderContainer = styled.div`
   border: 1px solid gray;
   padding: 1rem 2rem;
   width: 100%;
+  margin-bottom: 1rem;
 `;

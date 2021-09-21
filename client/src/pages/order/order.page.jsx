@@ -1,47 +1,59 @@
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { OrderContainer } from "./order.style";
-import { Pagination } from "antd";
+
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { fetchAllOrdersAction } from "../../redux/order/order.action";
 
 const OrderPage = () => {
-  return (
-    <div className="px-2 py-1 w-100 ">
-      <h3>Orders</h3>
-      <OrderContainer>
-        <section key={1} className="order-card">
-          <section className="order-header ">
-            <div className="order-name-status ">
-              <h3>name</h3>
-              <p>status</p>
-            </div>
-          </section>
-          <section className="order-info">
-            <p>
-              <b>+ 5 items</b>
-            </p>
+  const dispatch = useDispatch();
 
-            <p>
-              <b>order placed :</b> {new Date().toLocaleDateString()}
-            </p>
-            <p>
-              <b>total amount :</b> 1000/-
-            </p>
-          </section>
-          <Link
-            to={{
-              pathname: `/admin/dashboard/orders/123`,
-              state: { from: "dashboard" },
-            }}
-            className="more-link"
-          >
-            <Button>View order details</Button>
-          </Link>
-        </section>
-      </OrderContainer>
-      <section className="pagination w-full d-flex justify-content-center mt-5">
-        <Pagination size="small" total={10} current={1} pageSize={4} hideOnSinglePage />
-      </section>
-    </div>
+  const { orders, loading, totalOrders } = useSelector((state) => state.order);
+
+  useEffect(() => {
+    dispatch(fetchAllOrdersAction());
+  }, [dispatch]);
+
+  return (
+    <Container className="px-2 py-1 w-100 ">
+      <h3>Orders</h3>
+      {orders &&
+        orders.map((o) => (
+          <OrderContainer key={o._id}>
+            <section className="order-card">
+              <section className="order-header ">
+                <div className="order-name-status ">
+                  <h3>order id #{o._id}</h3>
+                  <p>
+                    {o.orderStatus === 0
+                      ? "Placed"
+                      : o.orderStatus === 1
+                      ? "In Process"
+                      : "Delivered"}
+                  </p>
+                </div>
+              </section>
+              <section className="order-info">
+                <p>
+                  <b>order placed :</b> {new Date(o.createdAt).toLocaleDateString()}
+                </p>
+                <p>
+                  <b>total amount :</b> {o.totalPrice}
+                </p>
+              </section>
+              <Link
+                to={{
+                  pathname: `/orders/${o._id}`,
+                }}
+                className="more-link"
+              >
+                <Button>View order details</Button>
+              </Link>
+            </section>
+          </OrderContainer>
+        ))}
+    </Container>
   );
 };
 

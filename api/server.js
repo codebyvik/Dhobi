@@ -10,6 +10,11 @@ const ConnectToDb = require("./utils/ConnectToDB");
 
 // routes
 const auth = require("./routes/auth.route");
+const shop = require("./routes/shop.route");
+const agent = require("./routes/agent.route");
+const customer = require("./routes/customer.route");
+const order = require("./routes/order.route");
+const payment = require("./routes/payment.route");
 
 // handle Uncaught exception
 process.on("uncaughtException", (err) => {
@@ -35,6 +40,11 @@ cloudinary.config({
 });
 
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/shop", shop);
+app.use("/api/v1/agent", agent);
+app.use("/api/v1/customer", customer);
+app.use("/api/v1/order", order);
+app.use("/api/v1/payment", payment);
 
 // listen to port
 const PORT = process.env.PORT || 5000;

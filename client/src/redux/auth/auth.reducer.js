@@ -13,12 +13,14 @@ export const authReducer = (state = InititalState, action) => {
     case AuthActionTypes.ADMIN_SIGNIN_START:
     case AuthActionTypes.USER_SIGNIN_START:
     case AuthActionTypes.REGISTER_USER_START:
+    case AuthActionTypes.AGENT_SIGNIN_START:
       return {
         ...state,
         loading: true,
         error: "",
         isAuthenticated: false,
       };
+
     case AuthActionTypes.GET_LOGGED_IN_USER_START:
       return {
         ...state,
@@ -30,6 +32,7 @@ export const authReducer = (state = InititalState, action) => {
     case AuthActionTypes.USER_SIGNIN_SUCCESS:
     case AuthActionTypes.GET_LOGGED_IN_USER_SUCCESS:
     case AuthActionTypes.REGISTER_USER_SUCCESS:
+    case AuthActionTypes.ADMIN_SIGNIN_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -37,10 +40,12 @@ export const authReducer = (state = InititalState, action) => {
         user: action.payload,
         isAuthenticated: true,
       };
+
     case AuthActionTypes.ADMIN_SIGNIN_FAIL:
     case AuthActionTypes.GET_LOGGED_IN_USER_FAIL:
     case AuthActionTypes.USER_SIGNIN_FAIL:
     case AuthActionTypes.REGISTER_USER_FAIL:
+    case AuthActionTypes.ADMIN_SIGNIN_FAIL:
       return {
         ...state,
         loading: false,

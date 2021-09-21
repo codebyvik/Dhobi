@@ -2,9 +2,24 @@ import { Rate } from "antd";
 import { Link } from "react-router-dom";
 import { Container, Form, Button } from "react-bootstrap";
 import { Shop, SortOptions } from "./shopPage.style";
-import Shop1 from "../../assets/shop1.jpg";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllShopsAction } from "../../redux/shop/shop.action";
 
 const ShopPage = () => {
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
+  const { shops } = useSelector((state) => state.shop);
+
+  useEffect(() => {
+    if (user) {
+      return dispatch(getAllShopsAction({ area: user.location.area }));
+    }
+
+    dispatch(getAllShopsAction({ area: "sanjaynagar" }));
+  }, []);
+
   const handleSort = (e) => {
     console.log(e.target.value);
   };
@@ -13,59 +28,32 @@ const ShopPage = () => {
     <Container>
       <div className="d-flex justify-content-between mt-3">
         <h5>Shops</h5>
-        <SortOptions>
+        {/* <SortOptions>
           <Form.Select size="sm" onChange={handleSort}>
             <option value="name">name</option>
             <option value="recent">recently added</option>
             <option value="ratings">ratings</option>
           </Form.Select>
-        </SortOptions>
+        </SortOptions> */}
       </div>
-      <Shop>
-        <div className="shop-img">
-          <img src={Shop1} alt="hop" />
-        </div>
-        <div>
-          <h3>Shop name</h3>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, nam?</p>
-          <Rate className="mb-3" disabled allowHalf defaultValue={3} /> <br />
-          <Link to="/shopDetails">
-            <Button variant="outline-primary" size="sm">
-              visit shop
-            </Button>
-          </Link>
-        </div>
-      </Shop>
-      <Shop>
-        <div className="shop-img">
-          <img src={Shop1} alt="hop" />
-        </div>
-        <div>
-          <h3>Shop name</h3>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, nam?</p>
-          <Rate className="mb-3" disabled allowHalf defaultValue={3} /> <br />
-          <Link to="/shopDetails">
-            <Button variant="outline-primary" size="sm">
-              visit shop
-            </Button>
-          </Link>
-        </div>
-      </Shop>
-      <Shop>
-        <div className="shop-img">
-          <img src={Shop1} alt="hop" />
-        </div>
-        <div>
-          <h3>Shop name</h3>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, nam?</p>
-          <Rate className="mb-3" disabled allowHalf defaultValue={3} /> <br />
-          <Link to="/shopDetails">
-            <Button variant="outline-primary" size="sm">
-              visit shop
-            </Button>
-          </Link>
-        </div>
-      </Shop>
+      {shops &&
+        shops.map((shop) => (
+          <Shop key={shop._id}>
+            <div className="shop-img">
+              <img src={shop.image.url} alt="hop" />
+            </div>
+            <div>
+              <h3>{shop.name}</h3>
+              <p>{(shop.location.area, shop.location.city, shop.location.pincode)}</p>
+              <Rate className="mb-3" disabled allowHalf defaultValue={3} /> <br />
+              <Link to={`/shops/${shop._id}`}>
+                <Button variant="outline-primary" size="sm">
+                  visit shop
+                </Button>
+              </Link>
+            </div>
+          </Shop>
+        ))}
     </Container>
   );
 };
